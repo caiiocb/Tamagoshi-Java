@@ -3,7 +3,7 @@ package Services.StateMachine.States;
 public class BabyState extends BaseState {
     @Override
     public void start() {
-        System.out.println("Entering Baby State");
+        
     }
 
     @Override

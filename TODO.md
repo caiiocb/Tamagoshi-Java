@@ -19,7 +19,7 @@ Este documento descreve o roteiro de implementação para o jogo Tamagotchi mono
     - [ ] Adicionar atributo `timestamp` (`long`) para controle da última vez visto.
     - [ ] Adicionar atributo `tipo` (String ou Enum) para diferenciar as espécies.
 - [ ] **Implementar Máquina de Estados (State Pattern)**
-    - [ ] Criar interface `PetState` (métodos: `update()`, `onEnter()`, `onExit()`).
+    - [x] Criar interface `PetState` (métodos: `update()`, `onEnter()`, `onExit()`).
     - [ ] Implementar estados concretos: `Ovo`, `Bebe`, `Adulto`, `Morto`.
     - [ ] Definir regras de transição (Ex: Tempo > X -> Evolui).
 - [ ] **Criar Configurações (`GameConfig`)**

@@ -29,10 +29,18 @@ public class GameLoop implements Runnable {
     @Override
     public void run() {
         long lastLoopTime = System.nanoTime();
+        
+        // Variáveis auxiliares para medir Performance
+        long timer = 0;
+        int frames = 0;
+
         while (isRunning) {
             long now = System.nanoTime();
             long updateLength = now - lastLoopTime;
             lastLoopTime = now;
+            
+            // Acumulamos o tempo passado nesta variável
+            timer += updateLength;
 
             Time.update(now);
             
@@ -40,6 +48,15 @@ public class GameLoop implements Runnable {
 
             render();
 
+            // Contamos +1 frame executado
+            frames++;
+
+            // Se o acumulador 'timer' bateu 1 segundo (1 bilhão de nanosegundos)
+            if (timer >= 1_000_000_000) {
+                System.out.println("FPS: " + frames); // Mostra quantos frames rodaram nesse segundo
+                frames = 0;
+                timer = 0;
+            }
             try {
                 long sleepTime = (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1_000_000;
                 if (sleepTime > 0) {
