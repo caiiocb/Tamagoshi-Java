@@ -6,7 +6,9 @@ import Models.Pet;
 import Services.Time.Time;
 
 public class PetStatusConfig {
+
     private static final Random random = new Random();
+    
     public static void updatePetStatus(Pet pet) {
         pet.setHungry(pet.getHungry() + 2 * Time.deltaTime);
         pet.setCleaning(pet.getCleaning() - 1.5 * Time.deltaTime);

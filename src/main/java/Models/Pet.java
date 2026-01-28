@@ -11,6 +11,7 @@ public class Pet {
     private double hungry;
     private double cleaning;
     private double fun;
+    private double drowsiness;
     private long timestamp;
 
     private int life;
@@ -20,6 +21,11 @@ public class Pet {
     private PetType[] type;
 
     public StateMachine stateMachine;
+
+    private int toys;
+    private int food;
+    private int soap;
+    private int coins;
 
     public Pet(String name) {
         this.name = name;
@@ -82,6 +88,47 @@ public class Pet {
 
     public double getCleaning() {
         return cleaning;
+    }
+
+    public double getDrowsiness() {
+        return drowsiness;
+    }
+    
+    public int getCoins() {
+        return coins;
+    }
+
+    public int getSoap() {
+        return soap;
+    }
+
+    public int getFood() {
+        return food;
+    }
+    
+    public int getToys() {
+        return toys;
+    }
+
+    public void setToys(int toys) {
+        this.toys = toys;
+    }
+    public void setFood(int food) {
+        this.food = food;
+    }
+    
+    public void setSoap(int soap) {
+        this.soap = soap;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+    
+    public void setDrowsiness(double drowsiness) {
+        if (drowsiness > 100) this.drowsiness = 100;
+        else if (drowsiness < 0) this.drowsiness = 0;
+        else this.drowsiness = drowsiness;
     }
 
     public void setCleaning(double cleaning) {
