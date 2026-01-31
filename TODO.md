@@ -14,16 +14,16 @@ Este documento descreve o roteiro de implementação para o jogo Tamagotchi mono
 *Foco: Criar as regras do jogo e estruturas de dados antes da interface.*
 
 - [ ] **Definir Modelo `Pet`**
-    - [ ] Criar classe `Pet` com atributos encapsulados (vida, fome, energia, diversão, higiene).
+    - [X] Criar classe `Pet` com atributos encapsulados (vida, fome, energia, diversão, higiene).
     - [ ] Implementar **JavaFX Properties** (`IntegerProperty`, `DoubleProperty`) para permitir *Data Binding*.
-    - [ ] Adicionar atributo `timestamp` (`long`) para controle da última vez visto.
-    - [ ] Adicionar atributo `tipo` (String ou Enum) para diferenciar as espécies.
+    - [X] Adicionar atributo `timestamp` (`long`) para controle da última vez visto.
+    - [X] Adicionar atributo `tipo` (String ou Enum) para diferenciar as espécies.
 - [ ] **Implementar Máquina de Estados (State Pattern)**
-    - [ ] Criar interface `PetState` (métodos: `update()`, `onEnter()`, `onExit()`).
-    - [ ] Implementar estados concretos: `Ovo`, `Bebe`, `Adulto`, `Morto`.
-    - [ ] Definir regras de transição (Ex: Tempo > X -> Evolui).
-- [ ] **Criar Configurações (`GameConfig`)**
-    - [ ] Definir constantes globais (Taxa de fome/segundo, XP para evoluir, Limites de status).
+    - [x] Criar interface `PetState` (métodos: `update()`, `onEnter()`, `onExit()`).
+    - [x] Implementar estados concretos: `Ovo`, `Bebe`, `Adulto`, `Morto`.
+    - [x] Definir regras de transição (Ex: Tempo > X -> Evolui).
+- [x] **Criar Configurações (`GameConfig`)**
+    - [x] Definir constantes globais (Taxa de fome/segundo, XP para evoluir, Limites de status).
 
 ## 💾 Fase 2: Persistência e Algoritmos de Tempo
 *Foco: O sistema de "vida fora do jogo".*
@@ -38,9 +38,9 @@ Este documento descreve o roteiro de implementação para o jogo Tamagotchi mono
     - [ ] Converter `Delta` em segundos/minutos.
     - [ ] Loop de simulação: Aplicar a redução de status baseada no tempo que passou.
     - [ ] *Tratamento:* Se o tempo for excessivo, matar o pet automaticamente.
-- [ ] **Game Loop (Tempo Real)**
-    - [ ] Implementar `Timeline` (JavaFX) ou `AnimationTimer`.
-    - [ ] Configurar o "tick" (ex: a cada 1s executa a lógica de redução de status).
+- [X] **Game Loop (Tempo Real)**
+    - [X] Implementar `Timeline` (JavaFX) ou `AnimationTimer`.
+    - [X] Configurar o "tick" (ex: a cada 1s executa a lógica de redução de status).
 
 ## 🎨 Fase 3: Interface Gráfica (Views & Controllers)
 *Foco: Implementação das telas solicitadas.*

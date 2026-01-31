@@ -7,23 +7,22 @@ public class Pet {
     private int cleaning;
     private int fun;
     private long timestamp;
-    public enum type{AGUA, TERRA, FOGO, AR};
 
-    public void exibir(){ //Método para teste
+    public void exibir(){
         System.out.println("Nome : " + this.getName());
         System.out.println("Life: " + this.getLife());
         System.out.println("Hungry: " + this.getHungry());
         System.out.println("Fun: " + this.getFun());
     }
-    //Método Construtor
-    public Pet(String name, enum type) {
+
+    public Pet(String name) {
         this.name = name;
         this.life = 100;
         this.hungry = 80;
         this.cleaning = 100;
         this.fun = 50;
     }
-    //Métodos Getter's e Setter's
+
     public String getName() {
         return name;
     }
@@ -63,5 +62,4 @@ public class Pet {
     public void setFun(int fun) {
         this.fun = fun;
     }
-
 }
