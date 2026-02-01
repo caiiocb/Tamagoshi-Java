@@ -20,7 +20,7 @@ public class Pet {
     private int speed;
     private PetType[] type;
 
-    public StateMachine stateMachine;
+    public transient StateMachine stateMachine;
 
     private int toys;
     private int food;
