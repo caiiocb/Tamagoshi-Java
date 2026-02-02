@@ -20,7 +20,7 @@ public class Pet {
     private int speed;
     private PetType[] type;
 
-    public StateMachine stateMachine;
+    public transient StateMachine stateMachine;
 
     private int toys;
     private int food;
@@ -195,5 +195,11 @@ public class Pet {
 
     public void setType(PetType[] type) {
         this.type = type;
+    }
+
+    public void reinitLogic(){
+        if(this.stateMachine == null){
+            this.stateMachine = new StateMachine(this);
+        }
     }
 }
