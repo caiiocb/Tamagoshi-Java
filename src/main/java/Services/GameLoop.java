@@ -71,6 +71,7 @@ public class GameLoop implements Runnable {
     }
 
     private void render() {
+        
     }
     
     public void loadGame(double deltaTime) {

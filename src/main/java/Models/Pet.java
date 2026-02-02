@@ -196,4 +196,10 @@ public class Pet {
     public void setType(PetType[] type) {
         this.type = type;
     }
+
+    public void reinitLogic(){
+        if(this.stateMachine == null){
+            this.stateMachine = new StateMachine(this);
+        }
+    }
 }

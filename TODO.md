@@ -13,12 +13,21 @@ Este documento descreve o roteiro de implementação para o jogo Tamagotchi mono
 ## 🛠️ Fase 1: Core e Lógica de Negócios (Backend)
 *Foco: Criar as regras do jogo e estruturas de dados antes da interface.*
 
+<<<<<<< HEAD
 - [ ] **Definir Modelo `Pet`**
     - [X] Criar classe `Pet` com atributos encapsulados (vida, fome, energia, diversão, higiene).
     - [ ] Implementar **JavaFX Properties** (`IntegerProperty`, `DoubleProperty`) para permitir *Data Binding*.
     - [X] Adicionar atributo `timestamp` (`long`) para controle da última vez visto.
     - [X] Adicionar atributo `tipo` (String ou Enum) para diferenciar as espécies.
 - [ ] **Implementar Máquina de Estados (State Pattern)**
+=======
+- [x] **Definir Modelo `Pet`**
+    - [x] Criar classe `Pet` com atributos encapsulados (vida, fome, energia, diversão, higiene).
+    - [x] Implementar **JavaFX Properties** (`IntegerProperty`, `DoubleProperty`) para permitir *Data Binding*.
+    - [x] Adicionar atributo `timestamp` (`long`) para controle da última vez visto.
+    - [x] Adicionar atributo `tipo` (String ou Enum) para diferenciar as espécies.
+- [x] **Implementar Máquina de Estados (State Pattern)**
+>>>>>>> upstream/main
     - [x] Criar interface `PetState` (métodos: `update()`, `onEnter()`, `onExit()`).
     - [x] Implementar estados concretos: `Ovo`, `Bebe`, `Adulto`, `Morto`.
     - [x] Definir regras de transição (Ex: Tempo > X -> Evolui).
