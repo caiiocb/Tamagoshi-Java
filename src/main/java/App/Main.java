@@ -17,7 +17,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         window = stage;
-        window.setTitle("Tamagotchi MVC");
+        window.setTitle("Tamagotchi");
         window.setResizable(false);
 
         // Inicia exibindo o Menu
