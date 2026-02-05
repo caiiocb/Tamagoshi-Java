@@ -1,11 +1,11 @@
 {
   "name": "Buddy",
-  "happiness": 50.0,
-  "hungry": 50.0,
-  "cleaning": 100.0,
-  "fun": 50.0,
-  "drowsiness": 0.0,
-  "timestamp": 1770068717540,
+  "happiness": 55.72521255000006,
+  "hungry": 100.0,
+  "cleaning": 91.45042510000013,
+  "fun": 94.30028340000007,
+  "drowsiness": 100.0,
+  "timestamp": 1770299806189,
   "life": 100,
   "attack": 10,
   "defense": 10,
@@ -14,7 +14,7 @@
     "NONE"
   ],
   "toys": 0,
-  "food": 0,
+  "food": -2551,
   "soap": 0,
   "coins": 0
 }

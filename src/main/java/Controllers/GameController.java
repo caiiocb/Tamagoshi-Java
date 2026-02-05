@@ -10,8 +10,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import javafx.scene.image.ImageView;
 
 public class GameController {
 
@@ -24,6 +28,10 @@ public class GameController {
     private ProgressBar cleaningBar;
     private ProgressBar funBar;
     private ProgressBar hungerBar;
+    private ProgressBar energyBar;
+    private Label nameLabel;
+    private Label coinsLabel;
+    private ImageView petImageView;
 
     public GameController(Pet pet) {
         this.pet = pet;
@@ -31,35 +39,124 @@ public class GameController {
         startGameLoop();
     }
 
+    //Método que cria as barras de necessidades, define o tamanho e aplica a cor via código
+    private ProgressBar createStyledBar(double value, String colorStyle){
+        ProgressBar bar = new ProgressBar(value / 100.0);
+        bar.setPrefWidth(300);
+        bar.setStyle(colorStyle);
+        return bar;
+    }
+
     private void createView() {
         BorderPane layout = new BorderPane();
-        layout.setPrefSize(400, 500);
+        layout.setPrefSize(400, 600);
+        layout.setStyle("-fx-background-color: #f4f4f4;"); //fundo cinza claro
 
         // --- HUD (Topo) ---
         VBox hud = new VBox(10);
+        hud.setPadding(new javafx.geometry.Insets(20));
         hud.setAlignment(Pos.CENTER);
-        
-        Label nameLabel = new Label("Pet: " + pet.getName());
-        statusLabel = new Label("Status: Iniciando...");
-        hungerBar = new ProgressBar(pet.getHungry() / 100.0);
-        hungerBar.setPrefWidth(300);
+        //Label de moedas
+        coinsLabel = new Label("Moedas: " + pet.getCoins());
+        coinsLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #2ecc71; -fx-font-weight: bold;");
 
-        hud.getChildren().addAll(nameLabel, statusLabel, new Label("Fome"), hungerBar);
+        nameLabel = new Label(pet.getName());
+        nameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+
+        statusLabel = new Label("Status: Iniciando...");
+        statusLabel.setStyle("-fx-font-style: italic ");
+
+        //Criando as barras de nessecidades
+        hungerBar = createStyledBar(pet.getHungry(), "-fx-accent: #e74c3c;"); // Vermelho
+        funBar = createStyledBar(pet.getFun(), "-fx-accent: #3498db;");       // Azul
+        cleaningBar = createStyledBar(pet.getCleaning(), "-fx-accent: #2ecc71;");// Verde
+        energyBar = createStyledBar(pet.getDrowsiness(), "-fx-accent: #f1c40f;"); //amarelo
+
+
+        hud.getChildren().addAll(
+                nameLabel, statusLabel,
+                new Label("Fome"), hungerBar,
+                new Label("Diversão"), funBar,
+                new Label("Limpeza"), cleaningBar,
+                new Label("Energia"), energyBar);
         layout.setTop(hud);
 
         // --- AÇÕES (Base) ---
-        VBox controls = new VBox(10);
-        controls.setAlignment(Pos.CENTER);
-        
+        VBox centerArea = new VBox();
+        centerArea.setAlignment(Pos.CENTER);
+        // cria o componente (o porta-retrato)
+        petImageView = new ImageView();
+        petImageView.setFitHeight(200);
+        petImageView.setPreserveRatio(true);
+
+        // carrega e definir a imagem
+        try {
+            var stream = getClass().getResourceAsStream("/imagens/pet_1.png");
+            if (stream != null) {
+                Image img = new Image(stream);
+                petImageView.setImage(img);
+            } else {
+                System.out.println("Erro: Arquivo não encontrado em resources/imagens/pet_1.png");
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar imagem: " + e.getMessage());
+        }
+        centerArea.getChildren().add(petImageView);
+
+        layout.setCenter(centerArea);
+
+        //Botões de interação
+        HBox actions = new HBox(15); // Espaço de 15px entre os botôes
+        actions.setAlignment(Pos.CENTER);
+        actions.setPadding(new javafx.geometry.Insets(20));
+
+        // Botão de Alimentar
+        Button btnFeed = new Button("Alimentar");
+        btnFeed.setPrefSize(100, 40);
+        btnFeed.setOnAction(e -> {
+            if (pet.stateMachine != null) {
+                pet.stateMachine.SwitchState(new Services.StateMachine.States.EatingState(pet.stateMachine));
+            }
+        });
+        // Botão de Brincar
+        Button btnPlay = new Button("Brincar");
+        btnPlay.setPrefSize(100, 40);
+        btnPlay.setOnAction(e ->{
+            pet.setFun(pet.getFun() + 15);
+            System.out.println("Se divertiu!! Diversão: " + pet.getFun());
+        });
+        // Botão de Limpar
+        Button btnClean = new Button("Limpar");
+        btnClean.setPrefSize(100, 40);
+        btnClean.setOnAction(e -> {
+            if (pet.stateMachine != null) {
+                pet.stateMachine.SwitchState(new Services.StateMachine.States.CelaningState(pet.stateMachine));
+            }
+        });
+        // Botão de Dormir
+        Button btnSleep = new Button("Dormir");
+        btnSleep.setPrefSize(100, 40);
+        btnSleep.setOnAction(e ->{
+        if (pet.stateMachine != null) {
+            if (pet.stateMachine.currentState instanceof Services.StateMachine.States.SleepingState) {
+            pet.stateMachine.SwitchState(new Services.StateMachine.States.IdleState(pet.stateMachine));
+            } else {
+            pet.stateMachine.SwitchState(new Services.StateMachine.States.SleepingState(pet.stateMachine));
+            }
+        }
+        });
+        //Botão de Salvar e Sair
         Button btnSave = new Button("Salvar e Sair");
+        btnSave.setPrefSize(100, 40);
+        btnSave.setStyle("-fx-base: #f39c12"); // alaranjado para destacar
         btnSave.setOnAction(e -> {
-            stopGameLoop();
-            DataSaveSystem.save(pet);
-            Main.showMenu();
+            stopGameLoop(); //Para thread do jogo
+            DataSaveSystem.save(pet); //Salvar o estado atual
+            Main.showMenu(); //Voltar para o menu
         });
 
-        controls.getChildren().add(btnSave);
-        layout.setBottom(controls);
+        actions.getChildren().addAll(btnFeed, btnPlay, btnClean,btnSleep, btnSave);
+        layout.setBottom(actions);
 
         this.scene = new Scene(layout);
     }
@@ -90,7 +187,15 @@ public class GameController {
     private void updateUI() {
         // Atualiza as barras com os dados reais do Pet
         hungerBar.setProgress(pet.getHungry() / 100.0);
-        // statusLabel.setText(...)
+        funBar.setProgress(pet.getFun() / 100.0);
+        cleaningBar.setProgress(pet.getCleaning() / 100.0);
+        energyBar.setProgress(pet.getDrowsiness() / 100.0);
+
+        // Atualiza o texto de status baseado no StateMachine
+        if (pet.stateMachine != null && pet.stateMachine.currentState != null){
+            String estatoAtual = pet.stateMachine.currentState.getClass().getSimpleName();
+            statusLabel.setText("Status: " + estatoAtual);
+        }
     }
 
     public void stopGameLoop() {

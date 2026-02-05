@@ -17,7 +17,7 @@ public class Time {
         long diff = currentNanoTime - _lastFrameTime;
         _unscaledDeltaTime = diff / 1_000_000_000.0;
 
-        deltaTime += _unscaledDeltaTime * timeScale;
+        deltaTime = _unscaledDeltaTime * timeScale; //Estava acumulando o deltaTime, agora é apenas o valor do frame atual.
 
         time += _unscaledDeltaTime;
 
