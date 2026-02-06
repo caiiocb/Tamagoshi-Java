@@ -18,6 +18,10 @@ public abstract class BaseState {
     protected void SwitchState(BaseState newState) {
         this.exit();
         newState.start();
-
     }
+
+    protected boolean toSleep = true;
+    protected boolean toClean = true;
+    protected boolean toPlay = true;
+    protected boolean toEat = true;
 }
