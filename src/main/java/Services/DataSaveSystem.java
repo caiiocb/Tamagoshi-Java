@@ -37,10 +37,14 @@ public class DataSaveSystem {
 
         try (Reader reader = new FileReader(SAVE_FILE)) {
             Pet loadedPet = gson.fromJson(reader, Pet.class);
-            loadedPet.reinitLogic();
-            
+
+            if (loadedPet != null){
+                loadedPet.reinitializeAfterLoad();
+            }
+
             return loadedPet;
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
             e.printStackTrace();
             return null;
         }

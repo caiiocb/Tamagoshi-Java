@@ -46,8 +46,6 @@ public class GameLoop implements Runnable {
             
             updateGame();
 
-            render();
-
             // Contamos +1 frame executado
             frames++;
 
@@ -69,13 +67,5 @@ public class GameLoop implements Runnable {
     private void updateGame() {
         pet.update();
     }
-
-    private void render() {
-        
-    }
     
-    public void loadGame(double deltaTime) {
-        PetStatusConfig.loadStatus(pet, deltaTime);
-        
-    }
 }
