@@ -12,6 +12,10 @@ public class JoyState extends BaseState {
     @Override
     public void start() {
         System.out.println("Entering Joy State");
+        this.toSleep = false;
+        this.toClean = true;
+        this.toPlay = false;
+        this.toEat = false;
     }
 
     @Override
