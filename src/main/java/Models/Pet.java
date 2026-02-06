@@ -1,5 +1,7 @@
 package Models;
-import Services.StateMachine.StateMachine;
+
+import Services.States.BaseState;
+import Services.States.IdleState;
 
 
 public class Pet {
@@ -20,14 +22,15 @@ public class Pet {
     private int speed;
     private PetType[] type;
 
-    public transient StateMachine stateMachine;
+    private transient BaseState currentState;
+    private String lastState;
 
     private int toys;
     private int food;
     private int soap;
     private int coins;
 
-    public Pet(String name) {
+    public Pet(String name, PetType[] type) {
         this.name = name;
         this.life = 100;
         this.hungry = 50;
@@ -36,8 +39,8 @@ public class Pet {
         this.happiness = 50;
         this.timestamp = System.currentTimeMillis();
 
-        this.stateMachine = new StateMachine(this);
-        
+        this.currentState = new IdleState(this);
+
         this.attack = 10;
         this.defense = 10;
         this.speed = 10;
@@ -45,8 +48,11 @@ public class Pet {
     }
 
     public void update() {
-        if (stateMachine != null && stateMachine.currentState != null) {
-            stateMachine.currentState.update();
+        if (currentState != null) {
+            currentState.update();
+        }
+        else{
+            System.out.println("Current state is null.");
         }
     }
 
@@ -197,9 +203,14 @@ public class Pet {
         this.type = type;
     }
 
-    public void reinitLogic(){
-        if(this.stateMachine == null){
-            this.stateMachine = new StateMachine(this);
+    public void SetState(BaseState newState) {
+        if (currentState != null) {
+            currentState.exit();
+        }
+        this.currentState = newState;
+        if (this.currentState != null) {
+            this.currentState.start();
+            this.lastState = this.currentState.name;
         }
     }
 }

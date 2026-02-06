@@ -1,11 +1,13 @@
-package Services.StateMachine.States;
+package Services.States;
 
-import Services.StateMachine.StateMachine;
+import Models.Pet;
+
 
 public class DeadState extends BaseState {
     
-    public DeadState(StateMachine stateMachine) {
-        super(stateMachine);
+    public DeadState(Pet pet) {
+        super(pet);
+        this.name = "Dead";
     }
     
     @Override
