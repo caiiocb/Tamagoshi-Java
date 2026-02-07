@@ -13,6 +13,9 @@ public class SleepingState extends BaseState {
     @Override
     public void start() {
         System.out.println("Entering Sleeping State");
+        pet.setDrowsiness(Math.min(100, pet.getDrowsiness() + 40));
+        pet.setFun(Math.max(0, pet.getFun() - 5));
+        System.out.println("Energia: " + pet.getDrowsiness() + " | Diversão: " + pet.getFun());
     }
 
     @Override

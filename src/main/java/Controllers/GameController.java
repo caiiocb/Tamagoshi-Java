@@ -4,6 +4,11 @@ import App.Main;
 import Models.Pet;
 import Services.DataSaveSystem;
 import Services.GameLoop;
+import Services.States.CelaningState;
+import Services.States.EatingState;
+import Services.States.IdleState;
+import Services.States.JoyState;
+import Services.States.SleepingState;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -46,7 +51,7 @@ public class GameController {
         bar.setStyle(colorStyle);
         return bar;
     }
-
+    
     private void createView() {
         BorderPane layout = new BorderPane();
         layout.setPrefSize(400, 600);
@@ -114,36 +119,27 @@ public class GameController {
         Button btnFeed = new Button("Alimentar");
         btnFeed.setPrefSize(100, 40);
         btnFeed.setOnAction(e -> {
-            if (pet.stateMachine != null) {
-                pet.stateMachine.SwitchState(new Services.StateMachine.States.EatingState(pet.stateMachine));
-            }
+            pet.SetState(new EatingState(pet));
         });
         // Botão de Brincar
         Button btnPlay = new Button("Brincar");
         btnPlay.setPrefSize(100, 40);
         btnPlay.setOnAction(e ->{
-            pet.setFun(pet.getFun() + 15);
-            System.out.println("Se divertiu!! Diversão: " + pet.getFun());
+            pet.SetState(new JoyState(pet));
         });
         // Botão de Limpar
         Button btnClean = new Button("Limpar");
         btnClean.setPrefSize(100, 40);
         btnClean.setOnAction(e -> {
-            if (pet.stateMachine != null) {
-                pet.stateMachine.SwitchState(new Services.StateMachine.States.CelaningState(pet.stateMachine));
-            }
+            pet.SetState(new CelaningState(pet));
         });
         // Botão de Dormir
         Button btnSleep = new Button("Dormir");
         btnSleep.setPrefSize(100, 40);
         btnSleep.setOnAction(e ->{
-        if (pet.stateMachine != null) {
-            if (pet.stateMachine.currentState instanceof Services.StateMachine.States.SleepingState) {
-            pet.stateMachine.SwitchState(new Services.StateMachine.States.IdleState(pet.stateMachine));
-            } else {
-            pet.stateMachine.SwitchState(new Services.StateMachine.States.SleepingState(pet.stateMachine));
+            if (pet.getCurrentState() == null || !(pet.getCurrentState() instanceof SleepingState)) {
+                pet.SetState(new SleepingState(pet));
             }
-        }
         });
         //Botão de Salvar e Sair
         Button btnSave = new Button("Salvar e Sair");
@@ -191,10 +187,11 @@ public class GameController {
         cleaningBar.setProgress(pet.getCleaning() / 100.0);
         energyBar.setProgress(pet.getDrowsiness() / 100.0);
 
-        // Atualiza o texto de status baseado no StateMachine
-        if (pet.stateMachine != null && pet.stateMachine.currentState != null){
-            String estatoAtual = pet.stateMachine.currentState.getClass().getSimpleName();
-            statusLabel.setText("Status: " + estatoAtual);
+        // Atualiza o texto de status baseado no State atual do Pet
+        if (pet.getCurrentState() != null) {
+            statusLabel.setText("Status: " + pet.getCurrentState().name);
+        } else {
+            statusLabel.setText("Status: Desconecido");
         }
     }
 

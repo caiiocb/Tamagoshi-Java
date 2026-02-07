@@ -12,6 +12,10 @@ public class JoyState extends BaseState {
     @Override
     public void start() {
         System.out.println("Entering Joy State");
+        pet.setFun(Math.min(100, pet.getFun() + 25));
+        pet.setHungry(pet.getHungry() + 10);
+        pet.setDrowsiness(pet.getDrowsiness() + 5);
+        System.out.println("Diversão: " + pet.getFun() + " | Fome: " + pet.getHungry() + " | Energia: " + pet.getDrowsiness());
     }
 
     @Override
