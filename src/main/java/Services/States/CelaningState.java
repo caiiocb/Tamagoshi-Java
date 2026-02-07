@@ -12,10 +12,7 @@ public class CelaningState extends BaseState {
 
     @Override
     public void start() {
-        System.out.println("Entering Cleaning State");
-        pet.setCleaning(Math.min(100, pet.getCleaning() + 35));
-        pet.setHappiness(pet.getHappiness() + 5);
-        System.out.println("Limpeza: " + pet.getCleaning() + " | Felicidade: " + pet.getHappiness());
+    
     }
 
     @Override

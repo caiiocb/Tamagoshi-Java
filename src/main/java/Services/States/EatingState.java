@@ -11,10 +11,7 @@ public class EatingState extends BaseState {
     
     @Override
     public void start() {
-        System.out.println("Entering Eating State");
-        pet.setHungry(Math.max(0, pet.getHungry() - 30));
-        pet.setHappiness(pet.getHappiness() + 10);
-        System.out.println("Fome: " + pet.getHungry() + " | Felicidade: " + pet.getHappiness());
+
     }
 
     @Override
