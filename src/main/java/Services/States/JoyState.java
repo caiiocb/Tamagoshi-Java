@@ -11,6 +11,10 @@ public class JoyState extends BaseState {
 
     @Override
     public void start() {
+<<<<<<< HEAD
+=======
+        System.out.println("Entering Joy State");
+>>>>>>> upstream/main
         this.toSleep = false;
         this.toClean = true;
         this.toPlay = false;
