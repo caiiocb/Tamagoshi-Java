@@ -15,13 +15,9 @@ public abstract class BaseState {
     public abstract void update();
     public abstract void exit();
 
-    protected void SwitchState(BaseState newState) {
-        this.exit();
-        newState.start();
-    }
-
-    protected boolean toSleep = true;
-    protected boolean toClean = true;
-    protected boolean toPlay = true;
-    protected boolean toEat = true;
+    
+    public boolean toSleep = true;
+    public boolean toClean = true;
+    public boolean toPlay = true;
+    public boolean toEat = true;
 }

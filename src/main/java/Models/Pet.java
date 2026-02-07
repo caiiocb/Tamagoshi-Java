@@ -9,8 +9,6 @@ import Services.States.SleepingState;
 
 public class Pet {
 
-    public enum PetType { NONE, SKY, EARTH, FIRE, WATER }
-
     private String name;
     private double happiness = 50, hungry = 50, cleaning = 100, fun = 50, drowsiness = 0;
     private long timestamp = System.currentTimeMillis();
@@ -41,12 +39,23 @@ public class Pet {
     }
 
     public void SetState(BaseState newState) {
-        if (currentState != null) currentState.exit();
+        if (currentState != null && canSwitchTo(newState)) currentState.exit();
         this.currentState = newState;
+
         if (this.currentState != null) {
             this.currentState.start();
             this.lastState = this.currentState.name;
         }
+    }
+
+    private boolean canSwitchTo(BaseState newState) {
+        return switch (newState.name) {
+            case "Cleaning" -> currentState.toClean;
+            case "Eating"   -> currentState.toEat;
+            case "Joy"      -> currentState.toPlay;   
+            case "Sleeping" -> currentState.toSleep;
+            default         -> true;
+        };
     }
 
     private double clamp(double val) { return Math.max(0, Math.min(100, val)); }
@@ -134,8 +143,6 @@ public class Pet {
     }
 
     private void applyOfflineChanges(double seconds) {
-        
-
         boolean wasSleeping = "Sleeping".equals(this.lastState);
 
         if (wasSleeping) {

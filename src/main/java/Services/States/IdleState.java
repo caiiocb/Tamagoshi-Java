@@ -1,6 +1,7 @@
 package Services.States;
 
 import Models.Pet;
+import Services.PetStatusConfig;
 
 public class IdleState extends BaseState {
     
@@ -11,12 +12,14 @@ public class IdleState extends BaseState {
     
     @Override
     public void start() {
-        
+        System.out.println("Entering Idle State");
+
     }
 
     @Override
     public void update() {
-
+        PetStatusConfig.updateDecay(this.pet);
+        checkDeath();
     }
 
     @Override
@@ -24,4 +27,9 @@ public class IdleState extends BaseState {
         System.out.println("Exiting Baby State");
     }
     
+    private void checkDeath() {
+        if (pet.getLife() <= 0) {
+            pet.SetState(new DeadState(pet));
+        }
+    }
 }

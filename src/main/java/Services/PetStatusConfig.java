@@ -3,6 +3,7 @@ package Services;
 import java.util.Random;
 
 import Models.Pet;
+import Models.PetType;
 import Services.Time.Time;
 public class PetStatusConfig {
 
@@ -14,11 +15,11 @@ public class PetStatusConfig {
     private static final double DROWSINESS_RATE = 0.8;  // Fica 0.8 mais cansado por segundo
     private static final double HEALTH_DECAY = 5.0;     // Se estiver crítico, perde 5 de vida
     
-    public static void petInitialize(String name, Pet.PetType[] type, Pet pet) {
+    public static void petInitialize(String name, PetType[] type, Pet pet) {
         pet.setName(name);
         pet.setType(type);
 
-        for (Pet.PetType t : type) {
+        for (PetType t : type) {
             switch (t) {
                 case FIRE -> {
                     pet.setAttack(pet.getAttack() + random.nextInt(7) + 3);
