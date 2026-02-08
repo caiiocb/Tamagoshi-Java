@@ -11,10 +11,6 @@ public class JoyState extends BaseState {
 
     @Override
     public void start() {
-<<<<<<< HEAD
-=======
-        System.out.println("Entering Joy State");
->>>>>>> upstream/main
         this.toSleep = false;
         this.toClean = true;
         this.toPlay = false;
@@ -30,5 +26,9 @@ public class JoyState extends BaseState {
     public void exit() {
         System.out.println("Exiting Joy State");
     }
-    
+
+    @Override
+    public String getImagemState() {
+        return "/imagens/idle.png";
+    }
 }

@@ -26,7 +26,12 @@ public class IdleState extends BaseState {
     public void exit() {
         System.out.println("Exiting Baby State");
     }
-    
+
+    @Override
+    public String getImagemState() {
+        return "/imagens/idle.png";
+    }
+
     private void checkDeath() {
         if (pet.getLife() <= 0) {
             pet.SetState(new DeadState(pet));

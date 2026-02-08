@@ -24,5 +24,9 @@ public class CelaningState extends BaseState {
     public void exit() {
         System.out.println("Exiting Cleaning State");
     }
-    
+
+    @Override
+    public String getImagemState() {
+        return "/imagens/sujo.png";
+    }
 }

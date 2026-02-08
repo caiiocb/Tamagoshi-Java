@@ -32,7 +32,15 @@ public class SleepingState extends BaseState {
     public void exit() {
         System.out.println("Exiting Sleeping State");
     }
-    
+
+    @Override
+    public String getImagemState() {
+        if (pet.getCleaning() < 30) {
+            return "/imagens/dormindo_sujo.png";
+        }
+        return "/imagens/dormindo.png";
+    }
+
     public boolean toSleep = false;
     public boolean toEat = false;
     public boolean toClean = false;

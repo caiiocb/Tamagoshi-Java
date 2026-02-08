@@ -42,9 +42,8 @@ public class MenuController {
         
         // JOGAR: Cria novo pet e troca para tela de jogo
         btnPlay.setOnAction(e -> {
-            Pet newPet = new Pet("Buddy", new PetType[]{PetType.NONE}); // Ou abrir tela de seleção antes
             // Main é nossa classe principal, chamamos o método estático
-            Main.startGame(newPet);
+            Main.showNamingScreen();
         });
 
         // CARREGAR: Busca do disco e troca para tela de jogo

@@ -14,6 +14,7 @@ public abstract class BaseState {
     public abstract void start();
     public abstract void update();
     public abstract void exit();
+    public abstract String getImagemState();
 
     
     public boolean toSleep = true;

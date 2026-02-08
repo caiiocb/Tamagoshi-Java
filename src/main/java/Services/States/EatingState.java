@@ -1,6 +1,7 @@
 package Services.States;
 
 import Models.Pet;
+import Services.Time.Time;
 
 public class EatingState extends BaseState {
     
@@ -16,12 +17,15 @@ public class EatingState extends BaseState {
 
     @Override
     public void update() {
-        
     }
 
     @Override
     public void exit() {
         System.out.println("Exiting Eating State");
     }
-    
+
+    @Override
+    public String getImagemState() {
+        return "/imagens/fome.png";
+    }
 }

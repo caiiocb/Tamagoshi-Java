@@ -1,23 +1,23 @@
 {
-  "name": "Buddy",
-  "happiness": 67.62856309999998,
-  "hungry": 62.81643945000002,
-  "cleaning": 93.69909689999996,
-  "fun": 40.54864534999999,
-  "drowsiness": 0.9170504,
-  "timestamp": 1770504374962,
-  "life": 100,
+  "name": "rob",
+  "happiness": 48.88164740499995,
+  "hungry": 0.0,
+  "cleaning": 74.62776169999987,
+  "fun": 11.941642549999933,
+  "drowsiness": 14.28775808,
+  "timestamp": 1770585312020,
+  "life": 0,
   "attack": 10,
   "defense": 10,
   "speed": 10,
   "type": [
-    "NONE"
+    "EARTH"
   ],
   "toys": 0,
   "food": 0,
   "soap": 0,
   "coins": 0,
-  "lastState": "Eating",
+  "lastState": "Cleaning",
   "hungerFactor": 0.05,
   "cleanFactor": 0.02,
   "funFactor": 0.03

@@ -25,5 +25,9 @@ public class DeadState extends BaseState {
     public void exit() {
         // No exit actions needed for dead state
     }
-    
+
+    @Override
+    public String getImagemState() {
+        return "";
+    }
 }
