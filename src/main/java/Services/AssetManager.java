@@ -32,6 +32,7 @@ public class AssetManager {
         String path = null;
 
         path = switch (state) {
+<<<<<<< HEAD
             case SUJO -> "/imagens/Catow/sujo.png";
             case TRISTE_SUJO -> "/imagens/Catow/triste_sujo.png";
             case LIMPO -> "/imagens/Catow/Idle.png";
@@ -43,6 +44,19 @@ public class AssetManager {
             case FOME -> "/imagens/Catow/fome.png";
             case MORTO -> "/imagens/Catow/triste.png";
             default -> "/imagens/Catow/Idle.png";
+=======
+            case SUJO -> "/images/Catow/sujo.png";
+            case TRISTE_SUJO -> "/images/Catow/triste_sujo.png";
+            case LIMPO -> "/images/Catow/Idle.png";
+            case COMENDO -> "/images/Catow/Idle.png";
+            case NORMAL -> "/images/Catow/Idle.png";
+            case TRISTE -> "/images/Catow/triste.png";
+            case DORMINDO -> "/images/Catow/dormindo.png";
+            case DORMINDO_SUJO -> "/images/Catow/dormindo_sujo.png";
+            case FOME -> "/images/Catow/fome.png";
+            case MORTO -> "/images/Catow/triste.png";
+            default -> "/images/Catow/Idle.png";
+>>>>>>> upstream/main
         }; // Fallback se não houver asset de morto
 
         InputStream is = AssetManager.class.getResourceAsStream(path);
