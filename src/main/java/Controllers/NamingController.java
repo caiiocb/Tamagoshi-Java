@@ -25,7 +25,7 @@ public class NamingController {
 
         ComboBox<PetType> typeSelector = new ComboBox<>();
         typeSelector.getItems().addAll(PetType.values());
-        typeSelector.setValue(PetType.NONE);
+        typeSelector.setValue(PetType.EARTH); // Valor padrão
 
         Button btnStart = new Button("Começar Jogo!!");
         btnStart.setOnAction(e ->{

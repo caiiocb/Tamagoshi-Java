@@ -2,6 +2,7 @@ package Controllers;
 
 import App.Main;
 import Models.Pet;
+import Services.AssetManager;
 import Services.DataSaveSystem;
 import Services.GameLoop;
 import Services.States.CelaningState;
@@ -124,17 +125,7 @@ public class GameController {
 
         // carrega e definir a imagem
         //Imagem padrao
-       try {
-            var stream = getClass().getResourceAsStream("/imagens/sujo.png");
-            if (stream != null) {
-                Image img = new Image(stream);
-                petImageView.setImage(img);
-            } else {
-                System.out.println("Erro: Arquivo não encontrado em resources/imagens/idle.png");
-            }
-        } catch (Exception e) {
-            System.out.println("Erro ao carregar imagem: " + e.getMessage());
-        }
+        petImageView.setImage(AssetManager.loadPetImage(pet));
         centerArea.getChildren().add(petImageView);
 
         layout.setCenter(centerArea);
@@ -220,9 +211,11 @@ public class GameController {
         cleaningBar.setProgress(pet.getCleaning() / 100.0);
         energyBar.setProgress(pet.getDrowsiness() / 100.0);
 
+        petImageView.setImage(AssetManager.loadPetImage(pet)); //Atualiza a imagem do pet baseado no estado atual
+
         // Atualiza o texto de status baseado no State atual do Pet
         if (pet.getCurrentState() != null) {
-            statusLabel.setText("Status: " + pet.getCurrentState().name);   
+            statusLabel.setText("Status: " + pet.getCurrentState().name);
         } else {
             statusLabel.setText("Status: Desconecido");
         }
