@@ -5,7 +5,11 @@ import Models.Pet;
 import Models.PetType;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 public class NamingController {
     private Scene scene;
@@ -30,14 +34,32 @@ public class NamingController {
         Button btnStart = new Button("Começar Jogo!!");
         btnStart.setOnAction(e ->{
             String name = nameField.getText();
-            if (!name.isEmpty()){
-                //Cria um novo pet e inicia jogo
-                Pet newPet = new Pet(name, new PetType[]{typeSelector.getValue()});
-                Main.startGame(newPet);
+            PetType selectedType = typeSelector.getValue();
+            
+            if (name == null || name.trim().isEmpty()) {
+                showAlert("Erro", "O nome do pet não pode ser vazio!");
+                return;
             }
+            
+            if (selectedType == null || selectedType == PetType.NONE) {
+                showAlert("Erro", "Selecione um tipo válido para o pet!");
+                return;
+            }
+
+            //Cria um novo pet e inicia jogo
+            Pet newPet = new Pet(name, new PetType[]{selectedType});
+            Main.startGame(newPet);
         });
         layout.getChildren().addAll(title, new Label("Nome: "), nameField, new Label("Tipo: "), typeSelector, btnStart);
         this.scene = new Scene(layout);
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     public Scene getScene(){return scene; }

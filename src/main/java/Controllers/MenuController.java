@@ -2,10 +2,10 @@ package Controllers;
 
 import App.Main;
 import Models.Pet;
-import Models.PetType;
-import Services.DataSaveSystem; // Sua classe de save
-import javafx.geometry.Pos;
+import Services.DataSaveSystem;
+import javafx.geometry.Pos; // Sua classe de save
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -53,7 +53,12 @@ public class MenuController {
                 Main.startGame(loadedPet);
             } else {
                 System.out.println("Nenhum save encontrado!");
-                // Aqui você poderia adicionar um Label de erro na interface
+                // Feedback visual para o usuário
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Carregar Jogo");
+                alert.setHeaderText(null);
+                alert.setContentText("Nenhum jogo salvo encontrado.");
+                alert.showAndWait();
             }
         });
 

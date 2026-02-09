@@ -6,7 +6,6 @@ import Services.DataSaveSystem;
 import Services.GameLoop;
 import Services.States.CelaningState;
 import Services.States.EatingState;
-import Services.States.IdleState;
 import Services.States.JoyState;
 import Services.States.SleepingState;
 import javafx.application.Platform;
@@ -16,17 +15,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import javafx.scene.image.ImageView;
 
 public class GameController {
 
     private Scene scene;
     private Pet pet;
     private GameLoop gameLoop;
+    private Thread uiUpdater;
 
     // Componentes da UI para atualizar depois
     private Label statusLabel;
@@ -199,12 +198,13 @@ public class GameController {
 
         // Cria um timer visual separado apenas para atualizar a UI do JavaFX
         // Isso evita conflito de Threads entre o GameLoop e a UI
-        Thread uiUpdater = new Thread(() -> {
-            while (true) {
+        this.uiUpdater = new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
                 try {
                     Thread.sleep(100); // 10fps para UI está ótimo
                     Platform.runLater(this::updateUI);
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                     break;
                 }
             }
@@ -226,11 +226,18 @@ public class GameController {
         } else {
             statusLabel.setText("Status: Desconecido");
         }
+
+        if (pet.getCurrentImage() != null) {
+            petImageView.setImage(pet.getCurrentImage());
+        }
     }
 
     public void stopGameLoop() {
         if (gameLoop != null) {
             gameLoop.stop();
+        }
+        if (uiUpdater != null && uiUpdater.isAlive()) {
+            uiUpdater.interrupt();
         }
     }
 
