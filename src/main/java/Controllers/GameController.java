@@ -7,7 +7,6 @@ import Services.DataSaveSystem;
 import Services.GameLoop;
 import Services.States.CelaningState;
 import Services.States.EatingState;
-import Services.States.IdleState;
 import Services.States.JoyState;
 import Services.States.SleepingState;
 import javafx.application.Platform;
@@ -17,17 +16,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import javafx.scene.image.ImageView;
 
 public class GameController {
 
     private Scene scene;
     private Pet pet;
     private GameLoop gameLoop;
+    private Thread uiUpdater;
 
     // Componentes da UI para atualizar depois
     private Label statusLabel;
@@ -125,7 +124,17 @@ public class GameController {
 
         // carrega e definir a imagem
         //Imagem padrao
-        petImageView.setImage(AssetManager.loadPetImage(pet));
+       try {
+            var stream = getClass().getResourceAsStream("/images/Catow/sujo.png");
+            if (stream != null) {
+                Image img = new Image(stream);
+                petImageView.setImage(img);
+            } else {
+                System.out.println("Erro: Arquivo não encontrado em resources/images/idle.png");
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar imagem: " + e.getMessage());
+        }
         centerArea.getChildren().add(petImageView);
 
         layout.setCenter(centerArea);
@@ -137,21 +146,21 @@ public class GameController {
 
         // Botão de Alimentar
         Button btnFeed = new Button("Alimentar\n");
-        setButtonIcon(btnFeed, "/imagens/icons/racao.png");
+        setButtonIcon(btnFeed, "/images/icons/racao.png");
         btnFeed.setPrefSize(100, 40);
         btnFeed.setOnAction(e -> {
             pet.SetState(new EatingState(pet));
         });
         // Botão de Brincar
         Button btnPlay = new Button("Brincar");
-        setButtonIcon(btnPlay, "/imagens/icons/brinquedos.png");
+        setButtonIcon(btnPlay, "/images/icons/brinquedos.png");
         btnPlay.setPrefSize(100, 40);
         btnPlay.setOnAction(e ->{
             pet.SetState(new JoyState(pet));
         });
         // Botão de Limpar
         Button btnClean = new Button("Limpar");
-        setButtonIcon(btnClean, "/imagens/icons/sabao.png");
+        setButtonIcon(btnClean, "/images/icons/sabao.png");
         btnClean.setPrefSize(100, 40);
         btnClean.setOnAction(e -> {
             pet.SetState(new CelaningState(pet));
@@ -159,7 +168,7 @@ public class GameController {
         // Botão de Dormir
         Button btnSleep = new Button("Dormir");
         btnSleep.setPrefSize(100, 40);
-        setButtonIcon(btnSleep, "/imagens/icons/iconSono.png");
+        setButtonIcon(btnSleep, "/images/icons/iconSono.png");
         btnSleep.setOnAction(e ->{
             if (pet.getCurrentState() == null || !(pet.getCurrentState() instanceof SleepingState)) {
                 pet.SetState(new SleepingState(pet));
@@ -190,12 +199,13 @@ public class GameController {
 
         // Cria um timer visual separado apenas para atualizar a UI do JavaFX
         // Isso evita conflito de Threads entre o GameLoop e a UI
-        Thread uiUpdater = new Thread(() -> {
-            while (true) {
+        this.uiUpdater = new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
                 try {
                     Thread.sleep(100); // 10fps para UI está ótimo
                     Platform.runLater(this::updateUI);
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                     break;
                 }
             }
@@ -219,11 +229,18 @@ public class GameController {
         } else {
             statusLabel.setText("Status: Desconecido");
         }
+
+        if (pet.getCurrentImage() != null) {
+            petImageView.setImage(pet.getCurrentImage());
+        }
     }
 
     public void stopGameLoop() {
         if (gameLoop != null) {
             gameLoop.stop();
+        }
+        if (uiUpdater != null && uiUpdater.isAlive()) {
+            uiUpdater.interrupt();
         }
     }
 
