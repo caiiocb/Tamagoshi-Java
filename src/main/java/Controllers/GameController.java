@@ -222,18 +222,7 @@ public class GameController {
 
         // Atualiza o texto de status baseado no State atual do Pet
         if (pet.getCurrentState() != null) {
-            statusLabel.setText("Status: " + pet.getCurrentState().name);
-            //Quando o estado muda a imagem também muda.
-            String imagePath = pet.getCurrentState().getImagemState();
-            try{
-                var stream = getClass().getResourceAsStream(imagePath);
-                if(stream != null){
-                    Image img = new Image(stream);
-                    petImageView.setImage(img);
-                }
-            } catch (Exception e){
-                System.out.println("Erro ao carregar imagem do estado: " + imagePath);
-            }
+            statusLabel.setText("Status: " + pet.getCurrentState().name);   
         } else {
             statusLabel.setText("Status: Desconecido");
         }

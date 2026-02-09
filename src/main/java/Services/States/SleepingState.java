@@ -1,8 +1,8 @@
 package Services.States;
 
 import Models.Pet;
+import Services.AssetManager;
 import Services.Time.Time;
-
 
 public class SleepingState extends BaseState {
 
@@ -13,11 +13,23 @@ public class SleepingState extends BaseState {
     
     @Override
     public void start() {
-    
+        System.out.println("Entering Sleeping State - Zzz...");
+        if (pet.getCleaning() <= 20) {
+            pet.setCurrentImage(AssetManager.loadPetImage(StateEnum.DORMINDO_SUJO));
+        } else {
+            pet.setCurrentImage(AssetManager.loadPetImage(StateEnum.DORMINDO));
+        }
     }
 
     @Override
     public void update() {
+        // Atualiza a imagem a cada frame
+        if (pet.getCleaning() <= 20) {
+            pet.setCurrentImage(AssetManager.loadPetImage(StateEnum.DORMINDO_SUJO));
+        } else {
+            pet.setCurrentImage(AssetManager.loadPetImage(StateEnum.DORMINDO));
+        }
+
         double recoveryRate = 10;
         pet.setDrowsiness(pet.getDrowsiness() - (recoveryRate * Time.deltaTime));
 
@@ -33,16 +45,9 @@ public class SleepingState extends BaseState {
         System.out.println("Exiting Sleeping State");
     }
 
-    @Override
-    public String getImagemState() {
-        if (pet.getCleaning() < 30) {
-            return "/imagens/dormindo_sujo.png";
-        }
-        return "/imagens/dormindo.png";
-    }
-
-    public boolean toSleep = false;
-    public boolean toEat = false;
-    public boolean toClean = false;
-    public boolean toPlay = false;
+    // Bloqueios: Só acorda se terminar ou se o usuário forçar (se implementarmos botão Acordar)
+    @Override public boolean canSleep() { return false; }
+    @Override public boolean canClean() { return false; }
+    @Override public boolean canPlay() { return false; }
+    @Override public boolean canEat() { return false; }
 }

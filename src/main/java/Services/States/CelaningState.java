@@ -1,9 +1,13 @@
 package Services.States;
 
 import Models.Pet;
-
+import Services.AssetManager;
+import Services.Time.Time;
 
 public class CelaningState extends BaseState {
+
+    private double duration = 2.0;
+    private double timer = 0;
 
     public CelaningState(Pet pet) {
         super(pet);
@@ -12,21 +16,32 @@ public class CelaningState extends BaseState {
 
     @Override
     public void start() {
-    
+        System.out.println("Entering Cleaning State - Scrub Scrub!");
+        timer = 0;
+        pet.setCurrentImage(AssetManager.loadPetImage(StateEnum.NORMAL));
     }
 
     @Override
     public void update() {
+        pet.setCurrentImage(AssetManager.loadPetImage(StateEnum.NORMAL));
+        timer += Time.deltaTime;
         
+        // Fica limpinho rápido
+        pet.setCleaning(pet.getCleaning() + (30 * Time.deltaTime));
+
+        if (timer >= duration || pet.getCleaning() >= 100) {
+            pet.SetState(new IdleState(pet));
+        }
     }
 
     @Override
     public void exit() {
         System.out.println("Exiting Cleaning State");
     }
-
-    @Override
-    public String getImagemState() {
-        return "/imagens/sujo.png";
-    }
+    
+    // Bloqueios
+    @Override public boolean canSleep() { return false; }
+    @Override public boolean canClean() { return false; }
+    @Override public boolean canPlay() { return false; }
+    @Override public boolean canEat() { return false; }
 }

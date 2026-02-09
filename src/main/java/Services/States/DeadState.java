@@ -1,7 +1,7 @@
 package Services.States;
 
 import Models.Pet;
-
+import Services.AssetManager;
 
 public class DeadState extends BaseState {
     
@@ -12,22 +12,24 @@ public class DeadState extends BaseState {
     
     @Override
     public void start() {
-        System.out.println("Pet has died.");
-        exit();
+        System.out.println("Pet Morreu... :(");
+        pet.setCurrentImage(AssetManager.loadPetImage(StateEnum.MORTO));
     }
 
     @Override
     public void update() {
-        // No updates needed for dead state
+        // Nada acontece :(
+        pet.setCurrentImage(AssetManager.loadPetImage(StateEnum.MORTO));
     }
 
     @Override
     public void exit() {
-        // No exit actions needed for dead state
+        // Não sai desse estado
     }
-
-    @Override
-    public String getImagemState() {
-        return "";
-    }
+    
+    // Bloqueio Total
+    @Override public boolean canSleep() { return false; }
+    @Override public boolean canClean() { return false; }
+    @Override public boolean canPlay() { return false; }
+    @Override public boolean canEat() { return false; }
 }

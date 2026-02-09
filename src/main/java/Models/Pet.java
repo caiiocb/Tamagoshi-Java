@@ -6,6 +6,7 @@ import Services.States.DeadState;
 import Services.States.EatingState;
 import Services.States.IdleState;
 import Services.States.SleepingState;
+import javafx.scene.image.Image;
 
 public class Pet {
 
@@ -23,6 +24,7 @@ public class Pet {
     // Estado
     private String lastState;
     private transient BaseState currentState;
+    private transient Image currentImage;
 
     //metadados
     double hungerFactor = 0.05 , cleanFactor = 0.02 , funFactor = 0.03;
@@ -48,12 +50,20 @@ public class Pet {
         }
     }
 
+    public Image getCurrentImage() {
+        return currentImage;
+    }
+
+    public void setCurrentImage(Image currentImage) {
+        this.currentImage = currentImage;
+    }
+
     private boolean canSwitchTo(BaseState newState) {
         return switch (newState.name) {
-            case "Cleaning" -> currentState.toClean;
-            case "Eating"   -> currentState.toEat;
-            case "Joy"      -> currentState.toPlay;   
-            case "Sleeping" -> currentState.toSleep;
+            case "Cleaning" -> currentState.canClean();
+            case "Eating"   -> currentState.canEat();
+            case "Joy"      -> currentState.canPlay();
+            case "Sleeping" -> currentState.canSleep();
             default         -> true;
         };
     }
