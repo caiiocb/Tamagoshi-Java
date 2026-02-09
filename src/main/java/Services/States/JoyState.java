@@ -6,7 +6,7 @@ import Services.Time.Time;
 
 public class JoyState extends BaseState {
 
-    private final double duration = 3.0; // Brinca por 3 segundos
+    private final double duration = 5.0; // Brinca por 5 segundos
     private double timer = 0;
 
     public JoyState(Pet pet) {
@@ -26,9 +26,13 @@ public class JoyState extends BaseState {
         pet.setCurrentImage(AssetManager.loadPetImage(StateEnum.NORMAL));
         timer += Time.deltaTime;
 
-        pet.setFun(pet.getFun() + (20 * Time.deltaTime));
-        pet.setDrowsiness(pet.getDrowsiness() + (5 * Time.deltaTime));
-        pet.setHungry(pet.getHungry() + (5 * Time.deltaTime));
+        // Balanceado para 5 segundos
+        // Total Fun: 20 -> 4/s
+        // Total Drowsiness: 5 -> 1/s
+        // Total Hungry: 5 -> 1/s
+        pet.setFun(pet.getFun() + (4 * Time.deltaTime));
+        pet.setDrowsiness(pet.getDrowsiness() + (1 * Time.deltaTime));
+        pet.setHungry(pet.getHungry() + (1 * Time.deltaTime));
 
         if (timer >= duration) {
             pet.SetState(new IdleState(pet));

@@ -11,9 +11,19 @@ public class AssetManager {
     public static Image loadPetImage(Pet pet) {
         if (pet.getLife() <= 0) return loadPetImage(StateEnum.MORTO);
 
-        // Lógica baseada em status
-        boolean isDirty = pet.getCleaning() <= 20;
-        boolean isHungry = pet.getHungry() >= 80;
+        // Lógica baseada em status (Alterado para <50% ou >50% conforme solicitação)
+        // Limpeza cai, então < 50 é ruim
+        boolean isDirty = pet.getCleaning() < 50; 
+        
+        // Fome sobe, então > 50 é ruim
+        boolean isHungry = pet.getHungry() > 50;  
+        
+        // Energia sobe (0=acordado, 100=sono), então > 50 é sono
+        boolean isSleepy = pet.getDrowsiness() > 50;
+
+        // Se estiver com muito sono (Prioridade visual alta)
+        if (isSleepy && isDirty) return loadPetImage(StateEnum.DORMINDO_SUJO);
+        if (isSleepy) return loadPetImage(StateEnum.DORMINDO);
 
         // Se estiver sujo e com fome -> triste_sujo
         if (isDirty && isHungry) return loadPetImage(StateEnum.TRISTE_SUJO);
@@ -21,8 +31,8 @@ public class AssetManager {
         // Se estiver sujo apenas -> sujo
         if (isDirty) return loadPetImage(StateEnum.SUJO);
         
-        // Se estiver com fome, mas n estiver sujo -> triste
-        if (isHungry) return loadPetImage(StateEnum.TRISTE);
+        // Se estiver com fome, mas n estiver sujo -> fome/triste
+        if (isHungry) return loadPetImage(StateEnum.FOME); // Ou TRISTE se não tiver img de fome separada
 
         // Se estiver com os status ok ele fica em idle
         return loadPetImage(StateEnum.NORMAL);

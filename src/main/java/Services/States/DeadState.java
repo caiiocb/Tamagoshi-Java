@@ -27,7 +27,6 @@ public class DeadState extends BaseState {
         // Não sai desse estado
     }
     
-    // Bloqueio Total
     @Override public boolean canSleep() { return false; }
     @Override public boolean canClean() { return false; }
     @Override public boolean canPlay() { return false; }

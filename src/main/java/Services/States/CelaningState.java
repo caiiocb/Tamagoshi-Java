@@ -6,7 +6,7 @@ import Services.Time.Time;
 
 public class CelaningState extends BaseState {
 
-    private double duration = 2.0;
+    private double duration = 5.0; // Banho dura 5 segundos
     private double timer = 0;
 
     public CelaningState(Pet pet) {
@@ -18,7 +18,7 @@ public class CelaningState extends BaseState {
     public void start() {
         System.out.println("Entering Cleaning State - Scrub Scrub!");
         timer = 0;
-        pet.setCurrentImage(AssetManager.loadPetImage(StateEnum.NORMAL));
+        pet.setCurrentImage(AssetManager.loadPetImage(StateEnum.NORMAL)); // Poderia ser SUJO ou específico
     }
 
     @Override
@@ -26,8 +26,9 @@ public class CelaningState extends BaseState {
         pet.setCurrentImage(AssetManager.loadPetImage(StateEnum.NORMAL));
         timer += Time.deltaTime;
         
-        // Fica limpinho rápido
-        pet.setCleaning(pet.getCleaning() + (30 * Time.deltaTime));
+        // Limpeza em 5s
+        // Total: 30 -> 6/s
+        pet.setCleaning(pet.getCleaning() + (6 * Time.deltaTime));
 
         if (timer >= duration || pet.getCleaning() >= 100) {
             pet.SetState(new IdleState(pet));

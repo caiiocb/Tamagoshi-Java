@@ -124,12 +124,12 @@ public class GameController {
         // carrega e definir a imagem
         //Imagem padrao
        try {
-            var stream = getClass().getResourceAsStream("/imagens/sujo.png");
+            var stream = getClass().getResourceAsStream("/images/Catow/sujo.png");
             if (stream != null) {
                 Image img = new Image(stream);
                 petImageView.setImage(img);
             } else {
-                System.out.println("Erro: Arquivo não encontrado em resources/imagens/idle.png");
+                System.out.println("Erro: Arquivo não encontrado em resources/images/idle.png");
             }
         } catch (Exception e) {
             System.out.println("Erro ao carregar imagem: " + e.getMessage());
@@ -145,21 +145,21 @@ public class GameController {
 
         // Botão de Alimentar
         Button btnFeed = new Button("Alimentar\n");
-        setButtonIcon(btnFeed, "/imagens/icons/racao.png");
+        setButtonIcon(btnFeed, "/images/icons/racao.png");
         btnFeed.setPrefSize(100, 40);
         btnFeed.setOnAction(e -> {
             pet.SetState(new EatingState(pet));
         });
         // Botão de Brincar
         Button btnPlay = new Button("Brincar");
-        setButtonIcon(btnPlay, "/imagens/icons/brinquedos.png");
+        setButtonIcon(btnPlay, "/images/icons/brinquedos.png");
         btnPlay.setPrefSize(100, 40);
         btnPlay.setOnAction(e ->{
             pet.SetState(new JoyState(pet));
         });
         // Botão de Limpar
         Button btnClean = new Button("Limpar");
-        setButtonIcon(btnClean, "/imagens/icons/sabao.png");
+        setButtonIcon(btnClean, "/images/icons/sabao.png");
         btnClean.setPrefSize(100, 40);
         btnClean.setOnAction(e -> {
             pet.SetState(new CelaningState(pet));
@@ -167,7 +167,7 @@ public class GameController {
         // Botão de Dormir
         Button btnSleep = new Button("Dormir");
         btnSleep.setPrefSize(100, 40);
-        setButtonIcon(btnSleep, "/imagens/icons/iconSono.png");
+        setButtonIcon(btnSleep, "/images/icons/iconSono.png");
         btnSleep.setOnAction(e ->{
             if (pet.getCurrentState() == null || !(pet.getCurrentState() instanceof SleepingState)) {
                 pet.SetState(new SleepingState(pet));

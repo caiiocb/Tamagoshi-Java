@@ -10,9 +10,9 @@ public class PetStatusConfig {
     private static final Random random = new Random();
 
     private static final double HUNGER_RATE = 2.0;      // Ganha 2 de fome por segundo
-    private static final double HYGIENE_RATE = 1.0;     // Perde 1 de limpeza por segundo
+    private static final double HYGIENE_RATE = 3.0;     // Perde 3 de limpeza por segundo (Aumentado para ser mais rápido)
     private static final double FUN_RATE = 1.5;         // Perde 1.5 de diversão por segundo
-    private static final double DROWSINESS_RATE = 0.8;  // Fica 0.8 mais cansado por segundo
+    private static final double DROWSINESS_RATE = 2.0;  // Fica 2.0 mais cansado por segundo (Aumentado)
     private static final double HEALTH_DECAY = 5.0;     // Se estiver crítico, perde 5 de vida
     
     public static void petInitialize(String name, PetType[] type, Pet pet) {
