@@ -4,6 +4,11 @@ import App.Main;
 import Models.Pet;
 import Services.DataSaveSystem;
 import Services.GameLoop;
+import Services.States.CelaningState;
+import Services.States.EatingState;
+import Services.States.IdleState;
+import Services.States.JoyState;
+import Services.States.SleepingState;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -38,15 +43,28 @@ public class GameController {
         createView();
         startGameLoop();
     }
-
+    //Método para adcionar icons aos botões.
+    private void setButtonIcon(Button button, String path) {
+        try {
+            var stream = getClass().getResourceAsStream(path);
+            if (stream != null) {
+                ImageView icon = new ImageView(new Image(stream));
+                icon.setFitHeight(20); // Ajuste o tamanho do ícone aqui
+                icon.setPreserveRatio(true);
+                button.setGraphic(icon);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar ícone: " + path);
+        }
+    }
     //Método que cria as barras de necessidades, define o tamanho e aplica a cor via código
     private ProgressBar createStyledBar(double value, String colorStyle){
         ProgressBar bar = new ProgressBar(value / 100.0);
-        bar.setPrefWidth(300);
+        bar.setPrefWidth(85);
         bar.setStyle(colorStyle);
         return bar;
     }
-
+    
     private void createView() {
         BorderPane layout = new BorderPane();
         layout.setPrefSize(400, 600);
@@ -73,12 +91,27 @@ public class GameController {
         energyBar = createStyledBar(pet.getDrowsiness(), "-fx-accent: #f1c40f;"); //amarelo
 
 
-        hud.getChildren().addAll(
-                nameLabel, statusLabel,
-                new Label("Fome"), hungerBar,
-                new Label("Diversão"), funBar,
-                new Label("Limpeza"), cleaningBar,
-                new Label("Energia"), energyBar);
+        // Criando um HBox para as barras ficarem lado a lado
+        HBox barsContainer = new HBox(10); // 10px de espaço entre cada bloco
+        barsContainer.setAlignment(Pos.CENTER);
+
+        // Criamos pequenos VBox para cada par (Nome da Necessidade + Barra)
+        VBox hungerBox = new VBox(3, new Label("Fome"), hungerBar);
+        hungerBox.setAlignment(Pos.CENTER);
+
+        VBox funBox = new VBox(3, new Label("Diversão"), funBar);
+        funBox.setAlignment(Pos.CENTER);
+
+        VBox cleanBox = new VBox(3, new Label("Limpeza"), cleaningBar);
+        cleanBox.setAlignment(Pos.CENTER);
+
+        VBox energyBox = new VBox(3, new Label("Energia"), energyBar);
+        energyBox.setAlignment(Pos.CENTER);
+        // Adiciona os blocos ao container horizontal
+        barsContainer.getChildren().addAll(hungerBox, funBox, cleanBox, energyBox);
+        // Adiciona tudo ao HUD principal
+        hud.getChildren().addAll(nameLabel, statusLabel, barsContainer);
+
         layout.setTop(hud);
 
         // --- AÇÕES (Base) ---
@@ -90,13 +123,14 @@ public class GameController {
         petImageView.setPreserveRatio(true);
 
         // carrega e definir a imagem
-        try {
-            var stream = getClass().getResourceAsStream("/imagens/pet_1.png");
+        //Imagem padrao
+       try {
+            var stream = getClass().getResourceAsStream("/imagens/sujo.png");
             if (stream != null) {
                 Image img = new Image(stream);
                 petImageView.setImage(img);
             } else {
-                System.out.println("Erro: Arquivo não encontrado em resources/imagens/pet_1.png");
+                System.out.println("Erro: Arquivo não encontrado em resources/imagens/idle.png");
             }
         } catch (Exception e) {
             System.out.println("Erro ao carregar imagem: " + e.getMessage());
@@ -111,39 +145,34 @@ public class GameController {
         actions.setPadding(new javafx.geometry.Insets(20));
 
         // Botão de Alimentar
-        Button btnFeed = new Button("Alimentar");
+        Button btnFeed = new Button("Alimentar\n");
+        setButtonIcon(btnFeed, "/imagens/icons/racao.png");
         btnFeed.setPrefSize(100, 40);
         btnFeed.setOnAction(e -> {
-            if (pet.stateMachine != null) {
-                pet.stateMachine.SwitchState(new Services.StateMachine.States.EatingState(pet.stateMachine));
-            }
+            pet.SetState(new EatingState(pet));
         });
         // Botão de Brincar
         Button btnPlay = new Button("Brincar");
+        setButtonIcon(btnPlay, "/imagens/icons/brinquedos.png");
         btnPlay.setPrefSize(100, 40);
         btnPlay.setOnAction(e ->{
-            pet.setFun(pet.getFun() + 15);
-            System.out.println("Se divertiu!! Diversão: " + pet.getFun());
+            pet.SetState(new JoyState(pet));
         });
         // Botão de Limpar
         Button btnClean = new Button("Limpar");
+        setButtonIcon(btnClean, "/imagens/icons/sabao.png");
         btnClean.setPrefSize(100, 40);
         btnClean.setOnAction(e -> {
-            if (pet.stateMachine != null) {
-                pet.stateMachine.SwitchState(new Services.StateMachine.States.CelaningState(pet.stateMachine));
-            }
+            pet.SetState(new CelaningState(pet));
         });
         // Botão de Dormir
         Button btnSleep = new Button("Dormir");
         btnSleep.setPrefSize(100, 40);
+        setButtonIcon(btnSleep, "/imagens/icons/iconSono.png");
         btnSleep.setOnAction(e ->{
-        if (pet.stateMachine != null) {
-            if (pet.stateMachine.currentState instanceof Services.StateMachine.States.SleepingState) {
-            pet.stateMachine.SwitchState(new Services.StateMachine.States.IdleState(pet.stateMachine));
-            } else {
-            pet.stateMachine.SwitchState(new Services.StateMachine.States.SleepingState(pet.stateMachine));
+            if (pet.getCurrentState() == null || !(pet.getCurrentState() instanceof SleepingState)) {
+                pet.SetState(new SleepingState(pet));
             }
-        }
         });
         //Botão de Salvar e Sair
         Button btnSave = new Button("Salvar e Sair");
@@ -191,10 +220,11 @@ public class GameController {
         cleaningBar.setProgress(pet.getCleaning() / 100.0);
         energyBar.setProgress(pet.getDrowsiness() / 100.0);
 
-        // Atualiza o texto de status baseado no StateMachine
-        if (pet.stateMachine != null && pet.stateMachine.currentState != null){
-            String estatoAtual = pet.stateMachine.currentState.getClass().getSimpleName();
-            statusLabel.setText("Status: " + estatoAtual);
+        // Atualiza o texto de status baseado no State atual do Pet
+        if (pet.getCurrentState() != null) {
+            statusLabel.setText("Status: " + pet.getCurrentState().name);   
+        } else {
+            statusLabel.setText("Status: Desconecido");
         }
     }
 

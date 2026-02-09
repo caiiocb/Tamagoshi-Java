@@ -120,6 +120,9 @@ public class Pet {
     public int getToys() { return toys; }
     public void setToys(int v) { this.toys = v; }
 
+    public BaseState getCurrentState() { return currentState; }
+
+
     public void exibir() {
         System.out.printf("Pet: %s | Life: %d | Hungry: %.1f | Fun: %.1f%n", name, life, hungry, fun);
     }

@@ -28,7 +28,7 @@ public class IdleState extends BaseState {
     public void exit() {
         System.out.println("Exiting Baby State");
     }
-    
+
     private void checkDeath() {
         if (pet.getLife() <= 0) {
             pet.SetState(new DeadState(pet));
